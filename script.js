@@ -1,12 +1,9 @@
-// ----- Words (5 letters) -----
 const WORDS = [
   "table", "chair", "piano", "mouse", "house",
   "plant", "brain", "cloud", "beach", "fruit",
-  // a few extra 5-letter words (still simple)
   "candy", "sugar", "green", "stone", "light"
 ];
 
-// ----- DOM -----
 const boardEl = document.getElementById("board");
 const inputEl = document.getElementById("guessInput");
 const submitBtn = document.getElementById("submitBtn");
@@ -17,7 +14,6 @@ const gamesPlayedEl = document.getElementById("gamesPlayed");
 const winPercentEl = document.getElementById("winPercent");
 const currentStreakEl = document.getElementById("currentStreak");
 
-// ----- Game State -----
 const ROWS = 6;
 const COLS = 5;
 
@@ -25,7 +21,6 @@ let targetWord = "";
 let currentRow = 0;
 let gameOver = false;
 
-// Stats stored in localStorage
 const STATS_KEY = "miniwordle_stats_v1";
 
 function loadStats() {
@@ -59,8 +54,7 @@ function updateStatsUI() {
   currentStreakEl.textContent = String(stats.currentStreak);
 }
 
-// ----- Board creation -----
-let cells = []; // 2D array [row][col] of cell elements
+let cells = [];
 
 function buildBoard() {
   boardEl.innerHTML = "";
@@ -79,10 +73,9 @@ function buildBoard() {
   }
 }
 
-// ----- Helpers -----
 function pickRandomWord() {
   const idx = Math.floor(Math.random() * WORDS.length);
-  return WORDS[idx].toUpperCase(); // store as uppercase for easy compare
+  return WORDS[idx].toUpperCase(); 
 }
 
 function setMessage(text, type = "") {
@@ -111,18 +104,14 @@ function clearRowVisual(r) {
   }
 }
 
-// ----- Correct Wordle-like feedback with duplicates -----
-// returns array of states: "correct" | "present" | "absent"
 function evaluateGuess(guess, target) {
   const result = Array(COLS).fill("absent");
 
   const targetArr = target.split("");
   const guessArr = guess.split("");
 
-  // count letters in target that are NOT already matched as "correct"
   const remainingCounts = {};
 
-  // pass 1: correct positions
   for (let i = 0; i < COLS; i++) {
     if (guessArr[i] === targetArr[i]) {
       result[i] = "correct";
@@ -132,7 +121,6 @@ function evaluateGuess(guess, target) {
     }
   }
 
-  // pass 2: present letters (yellow) using remaining counts
   for (let i = 0; i < COLS; i++) {
     if (result[i] === "correct") continue;
 
@@ -148,26 +136,21 @@ function evaluateGuess(guess, target) {
   return result;
 }
 
-// ----- Animations: reveal each cell with delay -----
 function revealRow(r, guess, states) {
   for (let c = 0; c < COLS; c++) {
     const cell = cells[r][c];
 
-    // put letter in cell
     cell.textContent = guess[c];
     cell.classList.add("filled");
 
-    // flip animation stagger
-    const delay = c * 120; // ms
+    const delay = c * 120;
     setTimeout(() => {
       cell.classList.add("reveal");
-      // apply color state (the flip makes it look like it reveals)
       cell.classList.add(states[c]);
     }, delay);
   }
 }
 
-// ----- Game flow -----
 function endGame(won) {
   gameOver = true;
   submitBtn.disabled = true;
@@ -198,44 +181,36 @@ function submitGuess() {
 
   const guess = normalizeGuess(inputEl.value);
 
-  // 2) Validation: 5 letters exactly
   if (!isFiveLetters(guess)) {
     setMessage("Your guess must be exactly 5 letters.", "error");
     return;
   }
-  // optional extra validation (letters only)
   if (!isLettersOnly(guess)) {
     setMessage("Use only letters A–Z (no spaces/numbers).", "error");
     return;
   }
 
-  setMessage(""); // clear errors
+  setMessage("");
 
-  // reveal and evaluate
   const states = evaluateGuess(guess, targetWord);
   revealRow(currentRow, guess, states);
 
-  // Win check
   if (guess === targetWord) {
-    // wait until last flip is done so it feels nicer
     setTimeout(() => endGame(true), 120 * COLS + 50);
     return;
   }
 
   currentRow += 1;
 
-  // Lose check
   if (currentRow >= ROWS) {
     setTimeout(() => endGame(false), 120 * COLS + 50);
     return;
   }
 
-  // prepare next row input
   inputEl.value = "";
   inputEl.focus();
 }
 
-// ----- New Game -----
 function resetGame() {
   targetWord = pickRandomWord();
   currentRow = 0;
@@ -243,7 +218,6 @@ function resetGame() {
 
   buildBoard();
 
-  // reset UI
   setMessage("New word selected. Good luck!");
   submitBtn.disabled = false;
   inputEl.disabled = false;
@@ -252,10 +226,8 @@ function resetGame() {
   newGameBtn.classList.add("hidden");
 }
 
-// ----- Events -----
 submitBtn.addEventListener("click", submitGuess);
 
-// 5) Keyboard support: Enter submits guess
 inputEl.addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
     submitGuess();
@@ -264,6 +236,6 @@ inputEl.addEventListener("keydown", (e) => {
 
 newGameBtn.addEventListener("click", resetGame);
 
-// ----- Init -----
 updateStatsUI();
 resetGame();
+
