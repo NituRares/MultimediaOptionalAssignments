@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mini Wordle</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <h1 class="title">Mini Wordle</h1>
+      <p class="subtitle">Guess the 5-letter word in 6 tries.</p>
+    </header>
+
+    <section class="stats" aria-label="Game statistics">
+      <div class="stat">
+        <div class="stat-number" id="gamesPlayed">0</div>
+        <div class="stat-label">Games</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number" id="winPercent">0%</div>
+        <div class="stat-label">Win %</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number" id="currentStreak">0</div>
+        <div class="stat-label">Streak</div>
+      </div>
+    </section>
+
+    <section class="board-wrap">
+      <div id="board" class="board" aria-label="Wordle board"></div>
+      <div id="message" class="message" role="status" aria-live="polite"></div>
+    </section>
+
+    <section class="controls" aria-label="Game controls">
+      <div class="input-row">
+        <input
+          id="guessInput"
+          class="guess-input"
+          type="text"
+          maxlength="5"
+          placeholder="Enter 5 letters"
+          autocomplete="off"
+          spellcheck="false"
+          aria-label="Enter your guess"
+        />
+        <button id="submitBtn" class="btn primary" type="button">Guess</button>
+      </div>
+
+      <!-- Only appears after game ends -->
+      <button id="newGameBtn" class="btn secondary hidden" type="button">New Game</button>
+    </section>
+
+    <footer class="footer">
+      <small>Tip: press <strong>Enter</strong> to submit.</small>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
