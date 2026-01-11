@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dynamic Chart Lab</title>
+
+  <link href="styles/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body data-theme="dark">
+  <main class="app">
+    <header class="header">
+      <div>
+        <h1>Dynamic Chart Visualization</h1>
+        <p class="subtitle">Canvas API + real-time data + interactivity</p>
+      </div>
+    </header>
+
+    <section class="panel">
+      <div class="controls">
+        <div class="control-group">
+          <button id="toggleBtn" class="btn primary">Pause</button>
+          <button id="resetBtn" class="btn">Reset</button>
+          <button id="exportBtn" class="btn">Export PNG</button>
+        </div>
+
+        <div class="control-group">
+          <label class="label">
+            Chart type
+            <select id="chartType" class="select">
+              <option value="line">Line</option>
+              <option value="area">Area</option>
+              <option value="bar">Bar</option>
+              <option value="scatter">Scatter</option>
+            </select>
+          </label>
+
+          <label class="label">
+            Theme
+            <select id="themeSelect" class="select">
+              <option value="dark">Dark</option>
+              <option value="light">Light</option>
+              <option value="contrast">High Contrast</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label class="label inline">
+            <input id="gridToggle" type="checkbox" checked />
+            Grid
+          </label>
+
+          <label class="label inline">
+            <input id="smoothToggle" type="checkbox" />
+            Smooth
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label class="label">
+            Speed (ms)
+            <input id="speedInput" class="input" type="number" min="100" max="5000" step="50" value="1000" />
+          </label>
+
+          <label class="label">
+            Min value
+            <input id="minInput" class="input" type="number" min="0" value="0" />
+          </label>
+
+          <label class="label">
+            Max value
+            <input id="maxInput" class="input" type="number" min="1" value="600" />
+          </label>
+        </div>
+
+        <div class="control-group series">
+          <span class="label small">Data series</span>
+          <label class="label inline small">
+            <input type="checkbox" class="seriesToggle" data-series="0" checked />
+            Series A
+          </label>
+          <label class="label inline small">
+            <input type="checkbox" class="seriesToggle" data-series="1" checked />
+            Series B
+          </label>
+          <label class="label inline small">
+            <input type="checkbox" class="seriesToggle" data-series="2" checked />
+            Series C
+          </label>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="canvas-card">
+          <div class="canvas-wrap">
+            <canvas id="chartCanvas" width="900" height="600"></canvas>
+            <div id="tooltip" class="tooltip" aria-hidden="true"></div>
+          </div>
+        </div>
+
+        <aside class="stats-card">
+          <h2>Statistics</h2>
+          <div id="statsContent" class="stats"></div>
+          <p class="hint">Hover near points to see tooltips.</p>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <script src="scripts/chart.js" type="text/javascript"></script>
+</body>
+</html>
